@@ -1,0 +1,60 @@
+export const colorPalettes = {
+  default: {
+    name: 'Classic Catholic',
+    primary: '#7A1E1E',
+    accent: '#C9A227',
+    background: '#F5F1E6',
+    text: '#3B2A1A',
+    secondaryBg: '#FFFFFF',
+  },
+  mariana: {
+    name: 'Marian Blue',
+    primary: '#2E5FA5',
+    accent: '#D4AF37',
+    background: '#FFFFFF',
+    text: '#333333',
+    secondaryBg: '#E6E6E6',
+  },
+  warmParish: {
+    name: 'Warm Parish',
+    primary: '#B65E3C',
+    accent: '#6B7A40',
+    background: '#F9F6F0',
+    text: '#5A3E2B',
+    secondaryBg: '#E8D8C3',
+  },
+  modernChurch: {
+    name: 'Modern Church',
+    primary: '#1F3A5F',
+    accent: '#E0B84C',
+    background: '#FFFFFF',
+    text: '#2A2A2A',
+    secondaryBg: '#E8F1FA',
+  },
+  liturgical: {
+    name: 'Liturgical Colors',
+    primary: '#2F7D4A',
+    accent: '#C9A227',
+    background: '#FFFFFF',
+    text: '#333333',
+    secondaryBg: '#F4F4F4',
+  },
+  lightHope: {
+    name: 'Light and Hope',
+    primary: '#4A90E2',
+    accent: '#F2C94C',
+    background: '#FFFFFF',
+    text: '#1B3C59',
+    secondaryBg: '#D9E7F5',
+  },
+  communityGreen: {
+    name: 'Community Green',
+    primary: '#2C5F2D',
+    accent: '#97BC62',
+    background: '#FFFFFF',
+    text: '#333333',
+    secondaryBg: '#F2E8CF',
+  },
+}
+
+export type PaletteKey = keyof typeof colorPalettes
