@@ -1,8 +1,18 @@
 import { NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
-import { writeFile, mkdir } from 'fs/promises'
-import { existsSync } from 'fs'
-import path from 'path'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+
+const s3Client = new S3Client({
+  region: 'us-east-1',
+  endpoint: process.env.S3_URL,
+  credentials: {
+    accessKeyId: process.env.S3_ACCESS_KEY || '',
+    secretAccessKey: process.env.S3_SECRET_KEY || '',
+  },
+  forcePathStyle: true,
+})
+
+const BUCKET_NAME = process.env.S3_BUCKET || 'uploads'
 
 export async function POST(request: Request) {
   const { response } = await requireAuth()
@@ -27,16 +37,20 @@ export async function POST(request: Request) {
   const ext = file.name.split('.').pop() || 'jpg'
   const filename = `${uniqueSuffix}.${ext}`
 
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads')
-  if (!existsSync(uploadDir)) {
-    await mkdir(uploadDir, { recursive: true })
-  }
+  await s3Client.send(
+    new PutObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: filename,
+      Body: buffer,
+      ContentType: file.type,
+    })
+  )
 
-  const filepath = path.join(uploadDir, filename)
-  await writeFile(filepath, buffer)
+const projectRef = process.env.S3_PROJECT_REF || process.env.S3_URL?.split('.')[0]?.replace('https://', '') || ''
+  const url = `https://${projectRef}.supabase.co/storage/v1/object/public/${BUCKET_NAME}/${filename}`
 
   return NextResponse.json({ 
-    url: `/uploads/${filename}`,
+    url,
     filename 
   })
 }

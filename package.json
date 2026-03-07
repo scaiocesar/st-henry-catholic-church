@@ -14,6 +14,7 @@
     "db:sync:supabase": "bash ./scripts/sync-local-to-supabase.sh"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1004.0",
     "@prisma/client": "^6.19.2",
     "@tiptap/extension-image": "^3.20.1",
     "@tiptap/extension-link": "^3.20.1",
