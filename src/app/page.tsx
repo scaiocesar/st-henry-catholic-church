@@ -253,13 +253,18 @@ export default async function Home() {
 
                     {locationCard.specials.length > 0 && (
                       <div className="mt-8">
-                        <h4 className="font-semibold text-[var(--secondary)] mb-4">Special Masses</h4>
+                        <h4 className="font-semibold text-[var(--primary)] mb-4 flex items-center gap-2">
+                          Special Masses
+                        </h4>
                         {locationCard.specials.map((mass) => (
-                          <div key={mass.id} className="mb-3 p-3 bg-gray-50 rounded">
-                            <p className="font-medium">{mass.title}</p>
-                            <p className="text-sm text-gray-600">
-                              {new Date(mass.date).toLocaleDateString()} at {mass.time}
+                          <div key={mass.id} className="mb-3 p-4 rounded-lg bg-gradient-to-r from-[var(--primary)]/10 to-[var(--secondary)]/10 border-l-4 border-[var(--primary)]">
+                            <p className="font-semibold text-[var(--secondary)]">{mass.title}</p>
+                            <p className="text-sm text-gray-600 mt-1">
+                              {new Date(mass.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {mass.time}
                             </p>
+                            {mass.description && (
+                              <p className="text-sm text-gray-500 mt-2">{mass.description}</p>
+                            )}
                           </div>
                         ))}
                       </div>
