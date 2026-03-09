@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "NEXT_SKIP_PRERENDER=1 npm run build",
   "installCommand": "npm install",
   "framework": "nextjs",
   "outputDirectory": ".next"

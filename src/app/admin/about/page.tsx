@@ -28,6 +28,7 @@ export default function AboutAdmin() {
   const [content, setContent] = useState('')
   const [isActive, setIsActive] = useState(true)
   const [loading, setLoading] = useState(true)
+  const [saved, setSaved] = useState(false)
 
   async function fetchSections() {
     const res = await fetch('/api/section')
@@ -43,13 +44,15 @@ export default function AboutAdmin() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         category,
-        title,
+        title: getLabel(category),
         content,
         isActive,
         sortOrder: CATEGORIES.findIndex((item) => item.key === category),
       }),
     })
     fetchSections()
+    setSaved(true)
+    setTimeout(() => setSaved(false), 3000)
   }
 
   const handleContentChange = (value: string) => {
@@ -92,6 +95,12 @@ export default function AboutAdmin() {
     <div>
       <h1 className="text-3xl font-semibold text-gray-800 mb-8">Sections Management</h1>
 
+      {saved && (
+        <div className="mb-4 p-4 bg-green-100 border border-green-500 text-green-700 rounded-lg">
+          Section saved successfully!
+        </div>
+      )}
+
       <div className="grid md:grid-cols-3 gap-4 mb-8">
         {CATEGORIES.map((cat) => (
           <button
@@ -119,14 +128,11 @@ export default function AboutAdmin() {
         <h2 className="text-xl font-semibold mb-4">Edit: {getLabel(category)}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder={`Title for ${getLabel(category)}`}
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-[var(--primary)] outline-none"
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">Section Title</label>
+            <div className="w-full p-2 bg-gray-100 border border-gray-300 rounded text-gray-700">
+              {getLabel(category)}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">Title is automatically set based on the selected category.</p>
           </div>
           <div className="flex items-center justify-between p-3 bg-gray-50 border rounded">
             <div>
