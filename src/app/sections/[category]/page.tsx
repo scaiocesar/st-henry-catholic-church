@@ -29,7 +29,7 @@ export default async function SectionPage({ params }: { params: Promise<{ catego
       <section className="relative h-[260px] md:h-[320px] flex items-center justify-center pt-16">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(http://44.202.215.36/wp-content/uploads/2026/02/image.jpg)' }}
+          style={{ backgroundImage: 'url(/images/hero-default.jpg)' }}
         />
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 text-center text-white px-4 sm:px-5">

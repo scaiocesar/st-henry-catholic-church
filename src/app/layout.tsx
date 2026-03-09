@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const homeContent = await getHomeContentMap();
   
   const churchName = homeContent.parishName || homeContent.churchName || 'St. Henry Catholic Church';
-  const churchDescription = homeContent.churchDescription || `Welcome to ${churchName} - A vibrant community of faith`;
+  const churchDescription = homeContent.churchDescription || `${churchName} - Mass times, schedule, and worship. Join our welcoming Catholic parish community in Brigham City, Utah for Sunday Mass, daily Mass, Confession, and Adoration.`;
   const churchUrl = homeContent.websiteUrl || 'https://sthenryutah.org';
   
   const seoKeywords = homeContent.seoKeywords || '';

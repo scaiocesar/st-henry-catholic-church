@@ -40,7 +40,7 @@ export default function LoginPage() {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <div className="text-center mb-8">
           <img 
-            src="http://44.202.215.36/wp-content/uploads/2026/02/Asset-2@300x-8.png" 
+            src="/images/logo-default.png" 
             alt="St Henry Catholic Church" 
             className="h-16 mx-auto mb-4"
           />

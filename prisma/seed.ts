@@ -74,10 +74,10 @@ async function main() {
   await prisma.homeContent.createMany({
     data: [
       { key: 'parishName', value: 'St Henry Catholic Church' },
-      { key: 'parishLogo', value: 'http://44.202.215.36/wp-content/uploads/2026/02/Asset-2@300x-8.png' },
+      { key: 'parishLogo', value: '/images/logo-default.png' },
       { key: 'heroTitle', value: 'Welcome to St Henry Catholic Church' },
       { key: 'heroSubtitle', value: 'Experience a vibrant community of faith where all are welcome. Join us for uplifting Mass services in both English and Spanish.' },
-      { key: 'heroImage', value: 'http://44.202.215.36/wp-content/uploads/2026/02/image.jpg' },
+      { key: 'heroImage', value: '/images/hero-default.jpg' },
       { key: 'welcomeTitle', value: 'Discover Our Vibrant Parish Community' },
       { key: 'welcomeText', value: 'St Henry Catholic Church serves as a beacon of faith and community in Brigham City, Utah. As a welcoming parish, we pride ourselves on creating an inclusive environment where individuals and families can come together in worship.' },
       { key: 'footerHours', value: 'Mon - Fri: 9 AM - 6 PM\nSat: 9 AM - 5 PM\nSun: 10 AM - 5 PM' },

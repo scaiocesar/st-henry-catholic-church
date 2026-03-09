@@ -12,7 +12,7 @@ interface Settings {
 
 const DEFAULT_SETTINGS: Settings = {
   parishName: 'St Henry Catholic Church',
-  parishLogo: 'http://44.202.215.36/wp-content/uploads/2026/02/Asset-2@300x-8.png',
+  parishLogo: '/images/logo-default.png',
   footerHours: 'Mon - Fri: 9 AM - 6 PM\nSat: 9 AM - 5 PM\nSun: 10 AM - 5 PM',
   footerLocation: '380 S 200 E\nBrigham City, UT 84302',
   footerContact: '(435) 723-2941\nSthenrys@comcast.net',

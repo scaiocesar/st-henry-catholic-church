@@ -18,12 +18,12 @@ export default function HomeAdmin() {
 
   const defaultContent = {
     parishName: 'St Henry Catholic Church',
-    parishLogo: 'http://44.202.215.36/wp-content/uploads/2026/02/Asset-2@300x-8.png',
-    heroTitle: 'Welcome to St Henry Catholic Church',
-    heroSubtitle: 'Experience a vibrant community of faith where all are welcome. Join us for uplifting Mass services in both English and Spanish.',
-    heroImage: 'http://44.202.215.36/wp-content/uploads/2026/02/image.jpg',
+    parishLogo: '/images/logo-default.png',
+    heroTitle: 'St Henry Catholic Church - Mass Times, Schedule & Worship',
+    heroSubtitle: 'Join us for uplifting Catholic Mass services in English and Spanish. Find daily Mass times, Sunday Mass schedule, Confession, and Adoration at our welcoming parish community in Brigham City, Utah.',
+    heroImage: '/images/hero-default.jpg',
     welcomeTitle: 'Discover Our Vibrant Parish Community',
-    welcomeText: 'St Henry Catholic Church serves as a beacon of faith and community in Brigham City, Utah. As a welcoming parish, we pride ourselves on creating an inclusive environment where individuals and families can come together in worship.'
+    welcomeText: 'St Henry Catholic Church serves as a beacon of faith and community in Brigham City, Utah. As a welcoming parish, we pride ourselves on creating an inclusive environment where individuals and families can come together in worship. Our church offers regular Mass times throughout the week, including daily Mass for those seeking spiritual nourishment on weekdays, and special Sunday Mass celebrations that bring our community together in praise. We provide Mass in both English and Spanish to serve our diverse congregation. In addition to our regular Mass schedule, we offer opportunities for Adoration of the Blessed Sacrament, where parishioners can spend quiet time in prayer before the Lord. Confession is available weekly, providing a sacred opportunity for reconciliation and spiritual healing. Whether you are a lifelong Catholic or exploring the faith for the first time, St Henry Catholic Church welcomes you to join us for Mass. Our parish community is dedicated to living out the teachings of Christ through liturgy, fellowship, and service to others. Come experience the warmth of our faith community and find a home at St Henry Catholic Church.'
   }
 
   useEffect(() => {
