@@ -76,6 +76,7 @@ export default function AdminLayout({
                 <Link href="/admin/gallery" className="text-gray-600 hover:text-[var(--primary)]">Gallery</Link>
                 <Link href="/admin/social" className="text-gray-600 hover:text-[var(--primary)]">Social Links</Link>
                 <Link href="/admin/settings" className="text-gray-600 hover:text-[var(--primary)]">Settings</Link>
+                <Link href="/admin/seo" className="text-gray-600 hover:text-[var(--primary)]">SEO</Link>
                 <Link href="/admin/password" className="text-gray-600 hover:text-[var(--primary)]">Password</Link>
                 <Link href="/admin/palette" className="text-gray-600 hover:text-[var(--primary)]">Theme</Link>
               </div>

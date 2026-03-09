@@ -4,21 +4,37 @@ import { getActiveSections, getHomeContentMap } from '@/lib/publicSite'
 export default async function SiteHeader() {
   const [sections, homeContent] = await Promise.all([getActiveSections(), getHomeContentMap()])
   const defaultParishName = 'St Henry Catholic Church'
-  const defaultParishLogo = 'http://44.202.215.36/wp-content/uploads/2026/02/Asset-2@300x-8.png'
   const parishName = homeContent.parishName || homeContent.churchName || defaultParishName
-  const parishLogo = homeContent.parishLogo || homeContent.churchLogo || defaultParishLogo
+  const parishLogo = homeContent.parishLogo || homeContent.churchLogo || null
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur shadow-md z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-5 py-3 md:py-5 flex justify-between items-center">
         <div className="flex items-center gap-3 md:gap-4 min-w-0">
-          <img src={parishLogo} alt={parishName} className="h-10 md:h-14 w-auto object-contain" />
-          <span
-            className="text-base sm:text-xl md:text-2xl font-semibold text-[var(--secondary)] truncate"
-            style={{ fontFamily: 'var(--font-heading)' }}
-          >
-            {parishName}
-          </span>
+          {parishLogo ? (
+            <>
+              <Link href="/">
+                <img src={parishLogo} alt={parishName} className="h-10 md:h-14 w-auto object-contain" />
+              </Link>
+              <Link href="/" className="text-[var(--secondary)]">
+                <span
+                  className="text-base sm:text-xl md:text-2xl font-semibold text-[var(--secondary)] truncate hidden md:block"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  {parishName}
+                </span>
+              </Link>
+            </>
+          ) : (
+            <Link href="/" className="text-[var(--secondary)]">
+              <span
+                className="text-base sm:text-xl md:text-2xl font-semibold text-[var(--secondary)] truncate"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                {parishName}
+              </span>
+            </Link>
+          )}
         </div>
 
         <nav className="hidden lg:flex gap-6 xl:gap-8">
