@@ -37,15 +37,15 @@ export async function DELETE(
 
   const { id } = await params
   
-  const photo = await prisma.galleryPhoto.findUnique({
+  const bulletin = await prisma.bulletin.findUnique({
     where: { id: parseInt(id) },
   })
 
-  if (photo?.s3Key) {
-    await deleteFromS3(photo.s3Key)
+  if (bulletin?.s3Key) {
+    await deleteFromS3(bulletin.s3Key)
   }
 
-  await prisma.galleryPhoto.delete({ where: { id: parseInt(id) } })
+  await prisma.bulletin.delete({ where: { id: parseInt(id) } })
   return NextResponse.json({ success: true })
 }
 
@@ -58,27 +58,23 @@ export async function PATCH(
 
   const { id } = await params
   const data = await request.json()
-  
-  const updateData: {
-    title: string | null
-    url: string
-    description: string | null
-    sortOrder: number
-    s3Key?: string | null
-  } = {
-    title: data.title || null,
-    url: data.url,
-    description: data.description || null,
-    sortOrder: data.sortOrder || 0,
+
+  if (data.isCurrent === true) {
+    await prisma.bulletin.updateMany({
+      where: { isCurrent: true },
+      data: { isCurrent: false },
+    })
   }
 
-  if (data.s3Key !== undefined) {
-    updateData.s3Key = data.s3Key
-  }
-
-  const photo = await prisma.galleryPhoto.update({
+  const bulletin = await prisma.bulletin.update({
     where: { id: parseInt(id) },
-    data: updateData,
+    data: {
+      title: data.title,
+      description: data.description || null,
+      isActive: data.isActive,
+      isCurrent: data.isCurrent || false,
+      sortOrder: data.sortOrder || 0,
+    },
   })
-  return NextResponse.json(photo)
+  return NextResponse.json(bulletin)
 }

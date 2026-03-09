@@ -19,6 +19,7 @@ export async function POST(request: Request) {
     data: {
       title: data.title || null,
       url: data.url,
+      s3Key: data.s3Key || null,
       description: data.description || null,
       isActive: true,
       sortOrder: data.sortOrder || 0,
