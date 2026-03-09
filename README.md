@@ -14,18 +14,19 @@ Dynamic website with CMS for managing church content.
 - Node.js 18+
 - PostgreSQL database
 - Docker (optional, for local database)
-- Supabase project (for storage and optional database)
+- S3-compatible storage (Supabase Storage, AWS S3, or MinIO)
 
-### Supabase API Keys
+### S3 Storage Credentials
 
-To find your Supabase credentials:
+To configure S3 storage:
 
-1. Go to [supabase.com](https://supabase.com) and sign in
-2. Select your project
-3. Go to **Project Settings** (gear icon) > **API**
-4. Find the following values:
-   - **Project URL** - This is your `NEXT_PUBLIC_SUPABASE_URL`
-   - **anon public** key - This is your `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+1. Go to your Supabase project dashboard
+2. Navigate to **Storage** > **Settings**
+3. Find your S3 credentials (URL, project ref, access key, secret key)
+
+Or use AWS S3 directly:
+1. Create an S3 bucket
+2. Generate IAM credentials with appropriate permissions
 
 ## Quick Start
 
@@ -99,7 +100,7 @@ Visit:
 
 ### Deploy with Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/scaiocesar/st-henry-catholic-church&env=DATABASE_URL,SESSION_SECRET,ADMIN_PASSWORD,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/scaiocesar/st-henry-catholic-church&env=DATABASE_URL,SESSION_SECRET,ADMIN_PASSWORD,S3_URL,S3_PROJECT_REF,S3_ACCESS_KEY,S3_SECRET_KEY,S3_BUCKET)
 
 ### Manual Deploy
 
@@ -109,8 +110,11 @@ Visit:
    - `DATABASE_URL`
    - `SESSION_SECRET`
    - `ADMIN_PASSWORD`
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `S3_URL`
+   - `S3_PROJECT_REF`
+   - `S3_ACCESS_KEY`
+   - `S3_SECRET_KEY`
+   - `S3_BUCKET`
 4. Deploy
 
 For Vercel with PostgreSQL, use Vercel Postgres or a hosted PostgreSQL service like Supabase, Neon, or Railway.

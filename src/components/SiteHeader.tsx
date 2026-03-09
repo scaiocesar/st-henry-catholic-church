@@ -53,8 +53,11 @@ export default async function SiteHeader() {
           <Link href="/#schedule" className="text-[var(--secondary)] hover:text-[var(--primary)] font-medium">
             Schedule
           </Link>
-          <Link href="/#gallery" className="text-[var(--secondary)] hover:text-[var(--primary)] font-medium">
+          <Link href="/gallery" className="text-[var(--secondary)] hover:text-[var(--primary)] font-medium">
             Gallery
+          </Link>
+          <Link href="/bulletin" className="text-[var(--secondary)] hover:text-[var(--primary)] font-medium">
+            Bulletin
           </Link>
           <Link href="/#contact" className="text-[var(--secondary)] hover:text-[var(--primary)] font-medium">
             Contact
@@ -82,8 +85,11 @@ export default async function SiteHeader() {
               <Link href="/#schedule" className="px-3 py-2 rounded hover:bg-gray-100 text-[var(--secondary)]">
                 Schedule
               </Link>
-              <Link href="/#gallery" className="px-3 py-2 rounded hover:bg-gray-100 text-[var(--secondary)]">
+              <Link href="/gallery" className="px-3 py-2 rounded hover:bg-gray-100 text-[var(--secondary)]">
                 Gallery
+              </Link>
+              <Link href="/bulletin" className="px-3 py-2 rounded hover:bg-gray-100 text-[var(--secondary)]">
+                Bulletin
               </Link>
               <Link href="/#contact" className="px-3 py-2 rounded hover:bg-gray-100 text-[var(--secondary)]">
                 Contact
