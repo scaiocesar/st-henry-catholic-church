@@ -14,6 +14,18 @@ Dynamic website with CMS for managing church content.
 - Node.js 18+
 - PostgreSQL database
 - Docker (optional, for local database)
+- Supabase project (for storage and optional database)
+
+### Supabase API Keys
+
+To find your Supabase credentials:
+
+1. Go to [supabase.com](https://supabase.com) and sign in
+2. Select your project
+3. Go to **Project Settings** (gear icon) > **API**
+4. Find the following values:
+   - **Project URL** - This is your `NEXT_PUBLIC_SUPABASE_URL`
+   - **anon public** key - This is your `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ## Quick Start
 
@@ -85,12 +97,20 @@ Visit:
 
 ## Deployment to Vercel
 
+### Deploy with Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME&env=DATABASE_URL,SESSION_SECRET,ADMIN_PASSWORD,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY&envLink=https%3A%2F%2Fgithub.com%2FYOUR_GITHUB_USERNAME%2FYOUR_REPO_NAME%2Fblob%2Fmain%2F.env.example)
+
+### Manual Deploy
+
 1. Push code to GitHub
 2. Import project in Vercel
 3. Add environment variables:
    - `DATABASE_URL`
    - `SESSION_SECRET`
    - `ADMIN_PASSWORD`
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 4. Deploy
 
 For Vercel with PostgreSQL, use Vercel Postgres or a hosted PostgreSQL service like Supabase, Neon, or Railway.
