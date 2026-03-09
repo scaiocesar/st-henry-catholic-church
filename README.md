@@ -10,7 +10,6 @@ Dynamic website with CMS for managing church content.
 - **Lite CMS Admin Panel** - Easy content management at `/admin`
 
 ## Prerequisites
-
 - Node.js 18+
 - PostgreSQL database
 - Docker (optional, for local database)
@@ -42,6 +41,7 @@ Copy the example environment file and update the values:
 
 ```bash
 cp .env.example .env
+
 ```
 
 Edit `.env` with your configuration:
