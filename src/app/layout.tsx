@@ -4,6 +4,8 @@ import "./globals.css";
 import PaletteProvider from "@/components/PaletteProvider";
 import { getChurchJsonLd, getHomeContentMap } from "@/lib/publicSite";
 
+export const dynamic = "force-dynamic";
+
 const ebGaramond = EB_Garamond({ 
   subsets: ["latin"],
   variable: "--font-heading"
