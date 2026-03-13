@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
+import GalleryWithModal from '@/components/GalleryWithModal'
 
 async function getGalleryPhotos() {
   try {
@@ -41,27 +42,7 @@ export default async function GalleryPage() {
               <p className="mt-2">Please check back later for updates from our parish community.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {photos.map((photo) => (
-                <div key={photo.id} className="relative group overflow-hidden rounded-lg">
-                  <img 
-                    src={photo.url} 
-                    alt={photo.title || 'Gallery photo'} 
-                    className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                    {photo.title && (
-                      <div className="p-4">
-                        <h3 className="text-white font-semibold">{photo.title}</h3>
-                        {photo.description && (
-                          <p className="text-gray-200 text-sm mt-1">{photo.description}</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <GalleryWithModal photos={photos} showOverlay />
           )}
         </div>
       </section>

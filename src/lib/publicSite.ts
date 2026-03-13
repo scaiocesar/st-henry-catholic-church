@@ -8,6 +8,13 @@ export type PublicSection = {
   sortOrder: number
 }
 
+export type PublicSocialLink = {
+  id: number
+  platform: string
+  url: string
+  sortOrder: number
+}
+
 export type ChurchJsonLd = {
   name: string
   description: string
@@ -50,6 +57,19 @@ export async function getActiveSections(): Promise<PublicSection[]> {
       category: true,
       title: true,
       content: true,
+      sortOrder: true,
+    },
+  })
+}
+
+export async function getActiveSocialLinks(): Promise<PublicSocialLink[]> {
+  return prisma.socialLink.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: 'asc' },
+    select: {
+      id: true,
+      platform: true,
+      url: true,
       sortOrder: true,
     },
   })

@@ -1,7 +1,9 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import sanitizeHtml from 'sanitize-html'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
+import GalleryWithModal from '@/components/GalleryWithModal'
 
 async function getMassSchedules() {
   try {
@@ -49,6 +51,26 @@ async function getSocialLinks() {
   }
 }
 
+const ALLOWED_HTML: sanitizeHtml.IOptions = {
+  allowedTags: ['p', 'h2', 'h3', 'h4', 'strong', 'em', 'u', 'ul', 'ol', 'li', 'a', 'img', 'br'],
+  allowedAttributes: {
+    a: ['href', 'title', 'target'],
+    img: ['src', 'alt', 'style'],
+  },
+  allowedSchemes: ['http', 'https', 'mailto'],
+}
+
+async function getEventsSection() {
+  try {
+    return await prisma.section.findFirst({
+      where: { category: 'events', isActive: true },
+      select: { title: true, content: true },
+    })
+  } catch {
+    return null
+  }
+}
+
 async function getHomeContent() {
   try {
     const content = await prisma.homeContent.findMany()
@@ -64,7 +86,7 @@ async function getHomeContent() {
 
 function SocialIcon({ platform }: { platform: string }) {
   const name = platform.toLowerCase()
-  const iconClass = 'w-6 h-6'
+  const iconClass = 'w-10 h-10'
   if (name.includes('facebook')) {
     return (
       <svg viewBox="0 0 24 24" fill="currentColor" className={iconClass} aria-hidden="true">
@@ -96,6 +118,7 @@ export default async function Home() {
   const specialMasses = await getSpecialMasses()
   const gallery = await getGallery()
   const socialLinks = await getSocialLinks()
+  const eventsSection = await getEventsSection()
   const homeContent = await getHomeContent()
 
   const scheduleByLocation = new Map<
@@ -180,8 +203,27 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Events */}
+      {eventsSection && (
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-4xl mx-auto px-4 sm:px-5">
+            <span className="text-sm font-semibold text-[var(--primary)] uppercase tracking-widest">Events</span>
+            <h2 className="text-3xl md:text-4xl my-6 text-[var(--secondary)]" style={{ fontFamily: 'var(--font-heading)' }}>
+              {eventsSection.title || 'Events'}
+            </h2>
+            <div
+              className="prose max-w-none text-gray-700"
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(eventsSection.content, ALLOWED_HTML) }}
+            />
+          </div>
+        </section>
+      )}
+
       {/* Mass Schedule */}
-      <section id="schedule" className="py-20 bg-gray-50 text-center">
+      <section
+        id="schedule"
+        className="py-20 text-center bg-gradient-to-br from-[var(--secondary)]/10 via-[var(--primary)]/10 to-white"
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-5">
           <span className="text-sm font-semibold text-[var(--primary)] uppercase tracking-widest">Mass Schedule</span>
           <h2 className="text-3xl md:text-4xl my-6 text-[var(--secondary)]" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -286,16 +328,13 @@ export default async function Home() {
               Photo Gallery
             </h2>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-12">
-              {gallery.map((photo) => (
-                <div key={photo.id} className="relative aspect-square overflow-hidden rounded-lg">
-                  <img 
-                    src={photo.url} 
-                    alt={photo.title || 'Gallery photo'} 
-                    className="object-cover w-full h-full hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-              ))}
+            <div className="mt-12">
+              <GalleryWithModal
+                photos={gallery}
+                gridClassName="grid grid-cols-2 md:grid-cols-3 gap-4"
+                itemClassName="relative aspect-square overflow-hidden rounded-lg"
+                imageClassName="object-cover w-full h-full hover:scale-110 transition-transform duration-300"
+              />
             </div>
           </div>
         </section>
@@ -310,19 +349,16 @@ export default async function Home() {
           <p className="text-base md:text-xl mb-8 opacity-90">
             Become a part of our welcoming parish and explore how you can contribute to our shared mission of faith.
           </p>
-          <a href="#contact" className="inline-block bg-[var(--primary)] text-white px-8 py-4 font-semibold uppercase tracking-wider hover:bg-[#5ab0d4] transition">
-            Get Involved
-          </a>
           
           {socialLinks.length > 0 && (
-            <div className="mt-12 flex justify-center gap-6">
+            <div className="mt-10 flex justify-center gap-5 md:gap-6">
               {socialLinks.map((link) => (
                 <a 
                   key={link.id}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white hover:text-[var(--primary)] text-2xl"
+                  className="w-16 h-16 rounded-full border-2 border-white/70 bg-white/10 text-white hover:text-[var(--secondary)] hover:bg-white transition-all shadow-lg shadow-black/25 flex items-center justify-center"
                   aria-label={link.platform}
                   title={link.platform}
                 >
