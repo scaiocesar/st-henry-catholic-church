@@ -1,21 +1,10 @@
 import { MetadataRoute } from 'next'
-import { prisma } from '@/lib/prisma'
+import { getActiveSections, getHomeContentMap } from '@/lib/publicSite'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://sthenryutah.org'
 
-  const [sections, homeContent] = await Promise.all([
-    prisma.section.findMany({
-      where: { isActive: true },
-      select: { category: true },
-    }),
-    prisma.homeContent.findMany(),
-  ])
-
-  const homeContentMap: Record<string, string> = {}
-  homeContent.forEach((item) => {
-    homeContentMap[item.key] = item.value
-  })
+  const [sections, homeContentMap] = await Promise.all([getActiveSections(), getHomeContentMap()])
 
   const url = homeContentMap.websiteUrl || baseUrl
 

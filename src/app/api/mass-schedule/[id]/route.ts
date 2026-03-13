@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAuth } from '@/lib/auth'
+import { revalidatePublicContent } from '@/lib/revalidatePublic'
 
 export async function DELETE(
   _request: Request,
@@ -11,6 +12,7 @@ export async function DELETE(
 
   const { id } = await params
   await prisma.massSchedule.delete({ where: { id: parseInt(id) } })
+  revalidatePublicContent()
   return NextResponse.json({ success: true })
 }
 
@@ -34,5 +36,6 @@ export async function PATCH(
       sortOrder: data.sortOrder,
     },
   })
+  revalidatePublicContent()
   return NextResponse.json(schedule)
 }

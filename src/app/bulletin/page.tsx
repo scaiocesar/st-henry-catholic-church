@@ -1,17 +1,6 @@
-import { prisma } from '@/lib/prisma'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
-
-async function getBulletins() {
-  try {
-    return await prisma.bulletin.findMany({
-      where: { isActive: true },
-      orderBy: [{ isCurrent: 'desc' }, { publishDate: 'desc' }],
-    })
-  } catch {
-    return []
-  }
-}
+import { getBulletins } from '@/lib/publicSite'
 
 export default async function BulletinPage() {
   const bulletins = await getBulletins()

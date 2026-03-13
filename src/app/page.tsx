@@ -1,55 +1,16 @@
-import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import sanitizeHtml from 'sanitize-html'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
 import GalleryWithModal from '@/components/GalleryWithModal'
-
-async function getMassSchedules() {
-  try {
-    return await prisma.massSchedule.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-      include: { location: true },
-    })
-  } catch {
-    return []
-  }
-}
-
-async function getSpecialMasses() {
-  try {
-    return await prisma.specialMass.findMany({
-      where: { isActive: true },
-      orderBy: { date: 'asc' }
-    })
-  } catch {
-    return []
-  }
-}
-
-async function getGallery() {
-  try {
-    return await prisma.galleryPhoto.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-      take: 6
-    })
-  } catch {
-    return []
-  }
-}
-
-async function getSocialLinks() {
-  try {
-    return await prisma.socialLink.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' }
-    })
-  } catch {
-    return []
-  }
-}
+import {
+  getEventsSection,
+  getGalleryPhotos,
+  getHomeContentMap,
+  getMassSchedules,
+  getSpecialMasses,
+  getActiveSocialLinks,
+} from '@/lib/publicSite'
 
 const ALLOWED_HTML: sanitizeHtml.IOptions = {
   allowedTags: ['p', 'h2', 'h3', 'h4', 'strong', 'em', 'u', 'ul', 'ol', 'li', 'a', 'img', 'br'],
@@ -58,30 +19,6 @@ const ALLOWED_HTML: sanitizeHtml.IOptions = {
     img: ['src', 'alt', 'style'],
   },
   allowedSchemes: ['http', 'https', 'mailto'],
-}
-
-async function getEventsSection() {
-  try {
-    return await prisma.section.findFirst({
-      where: { category: 'events', isActive: true },
-      select: { title: true, content: true },
-    })
-  } catch {
-    return null
-  }
-}
-
-async function getHomeContent() {
-  try {
-    const content = await prisma.homeContent.findMany()
-    const map: Record<string, string> = {}
-    content.forEach((item) => {
-      map[item.key] = item.value
-    })
-    return map
-  } catch {
-    return {}
-  }
 }
 
 function SocialIcon({ platform }: { platform: string }) {
@@ -114,12 +51,14 @@ function SocialIcon({ platform }: { platform: string }) {
 }
 
 export default async function Home() {
-  const massSchedules = await getMassSchedules()
-  const specialMasses = await getSpecialMasses()
-  const gallery = await getGallery()
-  const socialLinks = await getSocialLinks()
-  const eventsSection = await getEventsSection()
-  const homeContent = await getHomeContent()
+  const [massSchedules, specialMasses, gallery, socialLinks, eventsSection, homeContent] = await Promise.all([
+    getMassSchedules(),
+    getSpecialMasses(),
+    getGalleryPhotos(6),
+    getActiveSocialLinks(),
+    getEventsSection(),
+    getHomeContentMap(),
+  ])
 
   const scheduleByLocation = new Map<
     string,

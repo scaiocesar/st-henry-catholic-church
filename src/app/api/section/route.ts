@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAuth } from '@/lib/auth'
 import sanitizeHtml from 'sanitize-html'
+import { revalidatePublicContent } from '@/lib/revalidatePublic'
 
 const ALLOWED_HTML: sanitizeHtml.IOptions = {
   allowedTags: ['p', 'h2', 'h3', 'h4', 'strong', 'em', 'u', 'ul', 'ol', 'li', 'a', 'img', 'br'],
@@ -49,5 +50,6 @@ export async function POST(request: Request) {
       sortOrder: data.sortOrder || 0,
     },
   })
+  revalidatePublicContent()
   return NextResponse.json(section)
 }

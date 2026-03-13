@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAuth } from '@/lib/auth'
 import sanitizeHtml from 'sanitize-html'
+import { revalidatePublicContent } from '@/lib/revalidatePublic'
 
 const ALLOWED_HTML: sanitizeHtml.IOptions = {
   allowedTags: ['p', 'h2', 'h3', 'h4', 'strong', 'em', 'u', 'ul', 'ol', 'li', 'a', 'img', 'br'],
@@ -21,6 +22,7 @@ export async function DELETE(
 
   const { id } = await params
   await prisma.aboutContent.delete({ where: { id: parseInt(id) } })
+  revalidatePublicContent()
   return NextResponse.json({ success: true })
 }
 
@@ -42,5 +44,6 @@ export async function PATCH(
       sortOrder: data.sortOrder,
     },
   })
+  revalidatePublicContent()
   return NextResponse.json(content)
 }

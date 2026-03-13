@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 type GalleryPhotoItem = {
   id: number
@@ -54,7 +55,13 @@ export default function GalleryWithModal({
             onClick={() => setSelectedPhoto(photo)}
             aria-label={`Open image: ${photo.title || 'Gallery photo'}`}
           >
-            <img src={photo.url} alt={photo.title || 'Gallery photo'} className={imageClassName} />
+            <Image
+              src={photo.url}
+              alt={photo.title || 'Gallery photo'}
+              fill
+              sizes="(max-width: 768px) 50vw, 33vw"
+              className={imageClassName}
+            />
             {showOverlay && (
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                 {photo.title && (
@@ -92,9 +99,11 @@ export default function GalleryWithModal({
               x
             </button>
             <div className="w-full h-[75vh] flex items-center justify-center bg-black">
-              <img
+              <Image
                 src={selectedPhoto.url}
                 alt={selectedPhoto.title || 'Gallery photo'}
+                width={1600}
+                height={1200}
                 className="max-w-full max-h-full object-contain"
               />
             </div>

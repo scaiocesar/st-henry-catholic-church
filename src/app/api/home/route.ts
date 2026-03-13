@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAuth } from '@/lib/auth'
+import { revalidatePublicContent } from '@/lib/revalidatePublic'
 
 export async function GET() {
   const content = await prisma.homeContent.findMany()
@@ -17,5 +18,6 @@ export async function POST(request: Request) {
     update: { value: data.value },
     create: { key: data.key, value: data.value, description: data.description || null },
   })
+  revalidatePublicContent()
   return NextResponse.json(content)
 }

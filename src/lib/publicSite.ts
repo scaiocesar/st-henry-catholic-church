@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { unstable_cache } from 'next/cache'
 
 export type PublicSection = {
   id: number
@@ -39,7 +40,166 @@ export type ChurchJsonLd = {
   }>
 }
 
+const getHomeContentMapCached = unstable_cache(
+  async () => {
+    const content = await prisma.homeContent.findMany()
+    const map: Record<string, string> = {}
+    content.forEach((item) => {
+      map[item.key] = item.value
+    })
+    return map
+  },
+  ['public-home-content'],
+  { revalidate: 300, tags: ['home-content', 'seo'] }
+)
+
 export async function getHomeContentMap() {
+  return getHomeContentMapCached()
+}
+
+const getActiveSectionsCached = unstable_cache(
+  async (): Promise<PublicSection[]> => {
+    return prisma.section.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+      select: {
+        id: true,
+        category: true,
+        title: true,
+        content: true,
+        sortOrder: true,
+      },
+    })
+  },
+  ['public-active-sections'],
+  { revalidate: 300, tags: ['sections'] }
+)
+
+export async function getActiveSections(): Promise<PublicSection[]> {
+  return getActiveSectionsCached()
+}
+
+const getActiveSocialLinksCached = unstable_cache(
+  async (): Promise<PublicSocialLink[]> => {
+    return prisma.socialLink.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+      select: {
+        id: true,
+        platform: true,
+        url: true,
+        sortOrder: true,
+      },
+    })
+  },
+  ['public-active-social-links'],
+  { revalidate: 300, tags: ['social-links'] }
+)
+
+export async function getActiveSocialLinks(): Promise<PublicSocialLink[]> {
+  return getActiveSocialLinksCached()
+}
+
+export type PublicMassSchedule = Awaited<ReturnType<typeof getMassSchedules>>[number]
+
+const getMassSchedulesCached = unstable_cache(
+  async () => {
+    return prisma.massSchedule.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+      include: { location: true },
+    })
+  },
+  ['public-mass-schedules'],
+  { revalidate: 300, tags: ['mass-schedules', 'locations'] }
+)
+
+export async function getMassSchedules() {
+  return getMassSchedulesCached()
+}
+
+const getSpecialMassesCached = unstable_cache(
+  async () => {
+    return prisma.specialMass.findMany({
+      where: { isActive: true },
+      orderBy: { date: 'asc' },
+    })
+  },
+  ['public-special-masses'],
+  { revalidate: 300, tags: ['special-masses'] }
+)
+
+export async function getSpecialMasses() {
+  return getSpecialMassesCached()
+}
+
+export type PublicGalleryPhoto = Awaited<ReturnType<typeof getGalleryPhotos>>[number]
+
+const getGalleryPhotosCached = unstable_cache(
+  async () => {
+    return prisma.galleryPhoto.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+    })
+  },
+  ['public-gallery-photos'],
+  { revalidate: 300, tags: ['gallery-photos'] }
+)
+
+export async function getGalleryPhotos(limit?: number) {
+  const photos = await getGalleryPhotosCached()
+  if (typeof limit === 'number') {
+    return photos.slice(0, limit)
+  }
+  return photos
+}
+
+const getEventsSectionCached = unstable_cache(
+  async () => {
+    return prisma.section.findFirst({
+      where: { category: 'events', isActive: true },
+      select: { title: true, content: true },
+    })
+  },
+  ['public-events-section'],
+  { revalidate: 300, tags: ['sections'] }
+)
+
+export async function getEventsSection() {
+  return getEventsSectionCached()
+}
+
+const getBulletinsCached = unstable_cache(
+  async () => {
+    return prisma.bulletin.findMany({
+      where: { isActive: true },
+      orderBy: [{ isCurrent: 'desc' }, { publishDate: 'desc' }],
+    })
+  },
+  ['public-bulletins'],
+  { revalidate: 300, tags: ['bulletins'] }
+)
+
+export async function getBulletins() {
+  return getBulletinsCached()
+}
+
+const getLocationsCached = unstable_cache(
+  async () => {
+    return prisma.location.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+    })
+  },
+  ['public-locations'],
+  { revalidate: 300, tags: ['locations'] }
+)
+
+export async function getLocations() {
+  return getLocationsCached()
+}
+
+export async function getHomeContentMapUncached() {
   const content = await prisma.homeContent.findMany()
   const map: Record<string, string> = {}
   content.forEach((item) => {
@@ -48,45 +208,11 @@ export async function getHomeContentMap() {
   return map
 }
 
-export async function getActiveSections(): Promise<PublicSection[]> {
-  return prisma.section.findMany({
-    where: { isActive: true },
-    orderBy: { sortOrder: 'asc' },
-    select: {
-      id: true,
-      category: true,
-      title: true,
-      content: true,
-      sortOrder: true,
-    },
-  })
-}
-
-export async function getActiveSocialLinks(): Promise<PublicSocialLink[]> {
-  return prisma.socialLink.findMany({
-    where: { isActive: true },
-    orderBy: { sortOrder: 'asc' },
-    select: {
-      id: true,
-      platform: true,
-      url: true,
-      sortOrder: true,
-    },
-  })
-}
-
 export async function getChurchJsonLd(): Promise<ChurchJsonLd> {
   const [homeContent, locations, massSchedules] = await Promise.all([
     getHomeContentMap(),
-    prisma.location.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-    }),
-    prisma.massSchedule.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-      include: { location: true },
-    }),
+    getLocations(),
+    getMassSchedules(),
   ])
 
   const churchName = homeContent.parishName || homeContent.churchName || 'St. Henry Catholic Church'

@@ -1,18 +1,7 @@
-import { prisma } from '@/lib/prisma'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
 import GalleryWithModal from '@/components/GalleryWithModal'
-
-async function getGalleryPhotos() {
-  try {
-    return await prisma.galleryPhoto.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-    })
-  } catch {
-    return []
-  }
-}
+import { getGalleryPhotos } from '@/lib/publicSite'
 
 export default async function GalleryPage() {
   const photos = await getGalleryPhotos()

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAuth } from '@/lib/auth'
+import { revalidatePublicContent } from '@/lib/revalidatePublic'
 
 export async function DELETE(
   _request: Request,
@@ -11,6 +12,7 @@ export async function DELETE(
 
   const { id } = await params
   await prisma.specialMass.delete({ where: { id: parseInt(id) } })
+  revalidatePublicContent()
   return NextResponse.json({ success: true })
 }
 
@@ -33,5 +35,6 @@ export async function PATCH(
       location: data.location || null,
     },
   })
+  revalidatePublicContent()
   return NextResponse.json(mass)
 }

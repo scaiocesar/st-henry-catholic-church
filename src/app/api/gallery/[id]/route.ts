@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAuth } from '@/lib/auth'
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import { revalidatePublicContent } from '@/lib/revalidatePublic'
 
 const s3Client = new S3Client({
   region: 'us-east-1',
@@ -46,6 +47,7 @@ export async function DELETE(
   }
 
   await prisma.galleryPhoto.delete({ where: { id: parseInt(id) } })
+  revalidatePublicContent()
   return NextResponse.json({ success: true })
 }
 
@@ -80,5 +82,6 @@ export async function PATCH(
     where: { id: parseInt(id) },
     data: updateData,
   })
+  revalidatePublicContent()
   return NextResponse.json(photo)
 }
