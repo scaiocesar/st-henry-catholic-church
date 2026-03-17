@@ -39,6 +39,11 @@ export async function generateMetadata(): Promise<Metadata> {
       default: `${churchName} | Brigham City, Utah`,
       template: `%s | ${churchName}`,
     },
+    icons: {
+      icon: '/fav.ico',
+      shortcut: '/fav.ico',
+      apple: '/fav.ico',
+    },
     description: churchDescription,
     keywords,
     authors: [{ name: churchName }],
