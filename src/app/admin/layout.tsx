@@ -17,6 +17,7 @@ const menuItems = [
   { href: '/admin/settings', label: 'Settings', icon: '⚙' },
   { href: '/admin/seo', label: 'SEO', icon: '◎' },
   { href: '/admin/password', label: 'Password', icon: '🔒' },
+  { href: '/admin/users', label: 'Admin users', icon: '👤' },
   { href: '/admin/palette', label: 'Theme', icon: '◐' },
 ]
 

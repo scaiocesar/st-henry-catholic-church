@@ -33,7 +33,11 @@ export async function POST(request: Request) {
 export async function GET() {
   const session = await getSession()
   if (session) {
-    return NextResponse.json({ authenticated: true })
+    return NextResponse.json({
+      authenticated: true,
+      userId: session.id,
+      username: session.username,
+    })
   }
   return NextResponse.json({ authenticated: false })
 }

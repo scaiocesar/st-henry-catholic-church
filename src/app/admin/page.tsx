@@ -9,6 +9,10 @@ export default function AdminPage() {
     <div>
       <h1 className="text-3xl font-semibold text-gray-800 mb-8">Admin Dashboard</h1>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Link href="/admin/users" className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+          <h2 className="text-xl font-semibold text-[var(--secondary)] mb-2">Admin users</h2>
+          <p className="text-gray-600">Create, edit, or remove CMS administrators</p>
+        </Link>
         <Link href="/admin/schedule" className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
           <h2 className="text-xl font-semibold text-[var(--secondary)] mb-2">Mass Schedule</h2>
           <p className="text-gray-600">Manage regular mass times</p>
