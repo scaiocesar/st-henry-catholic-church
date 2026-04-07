@@ -3,6 +3,7 @@ import { EB_Garamond, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import PaletteProvider from "@/components/PaletteProvider";
 import { getChurchJsonLd, getHomeContentMap } from "@/lib/publicSite";
+import { Analytics } from "@vercel/analytics/next";
 
 export const dynamic = "force-dynamic";
 
@@ -117,6 +118,7 @@ export default async function RootLayout({
         <PaletteProvider>
           {children}
         </PaletteProvider>
+        <Analytics />
       </body>
     </html>
   );
